@@ -12,11 +12,9 @@ this appending the block in the blockchain.
 
 package main
 import (
-	//"errors"
+	"errors"
 	"fmt"
-	"encoding/json"
-	"os"
-//	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
 //SimpleChaincode example simple Chaincode implementation
@@ -106,26 +104,22 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
 
 // read - query function to read key/value pair
 func (t *SimpleChaincode) read(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-	var key, jsonResp string
-	var err error
+	var key string
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting name of the key to query")
 	}
 
 	key = args[0]
-	valAsbytes, err := stub.GetState(key)
+	var valAsbytes, err = stub.GetState(key)
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
-
-
-		return nil, errors.New(jsonResp)
+		return nil, errors.New("{\"Error\":\"Failed to get state for " + key + "\"}")
 	}
 
 	return valAsbytes, nil
 }
 
-
+/*
 // read - query function to read key/value pair
 func (t *SimpleChaincode) validate(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 	var key, jsonResp string
@@ -137,11 +131,11 @@ func (t *SimpleChaincode) validate(stub shim.ChaincodeStubInterface, args []stri
 
 
 	data := []byte(args[0])
-	contract =  args[1] 
+	var contract =  args[1] 
 
 	ContractvalAsbytes, err := stub.GetState(contract)
 	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + key + "\"}"
+		jsonResp := "{\"Error\":\"Failed to get state for " + key + "\"}"
 
 		return nil, errors.New(jsonResp)
 	}
@@ -152,12 +146,12 @@ func (t *SimpleChaincode) validate(stub shim.ChaincodeStubInterface, args []stri
     var f interface{}     //Interface for marshalling the data received from blockchain contract used for comparison.
     var g interface{}      //Interface for receiving and marshalling the received data 
 
-		err := json.Unmarshal(ContractvalAsbytes, &f)
+		err = json.Unmarshal(ContractvalAsbytes, &f)
 		if (err!=nil) {
 			os.Exit(1)
 		}
 
-		err := json.Unmarshal(ContractvalAsbytes, &g )
+		err = json.Unmarshal(ContractvalAsbytes, &g )
 		if (err!=nil) {
 			os.Exit(1)
 		}
@@ -179,7 +173,7 @@ func (t *SimpleChaincode) validate(stub shim.ChaincodeStubInterface, args []stri
 
 		}
         
-        /*Section to validate the two jsons and put state only if data is validated*/ 
+        //Section to validate the two jsons and put state only if data is validated
         
         //Smart Contract Rules :
 
@@ -190,6 +184,6 @@ func (t *SimpleChaincode) validate(stub shim.ChaincodeStubInterface, args []stri
         //if true : insert in to blockchain.
 
 
-	return valAsbytes, nil
+	return jsonResp, nil
 }
-
+*/
